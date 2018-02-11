@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package quiz;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -11,62 +12,95 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
  *
  * @author Joshu
  */
 public class ParseQuiz {
-    
-    public static void main(){
-        
+
+    public static void main() {
+
     }
-    
-     /**
-         * This nasty little method loads file and creates the array list
-         * of nodes for world.
-         * @param filename
-         * @return NodeList
-         */
-	private ArrayList<Node> loadNodes(String filename) {
-		ArrayList<Node> newNodesList = new ArrayList<>();
 
-		//Node newNode = new Node();
+    class Question {
 
-		try {
-			BufferedReader input = new BufferedReader(new FileReader(filename));
+        int chapterNo;
+        int questionNo;
+        String questionText;
+        String choiceA;
+        String choiceB;
+        String choiceC;
+        String choiceD;
+        String choiceE;
+        String answerKey;
+        String hint;
+    }
 
-			String[] edges;
-                        String[] items;
-			String fileRead = input.readLine();
-			while (fileRead != null) {
-				StringBuilder description = new StringBuilder();
-				tokens = fileRead.split(",");
-                                fileRead = input.readLine();
-                                items = fileRead.split(",");
-                                
-				edges = Arrays.copyOfRange(tokens, 1, tokens.length); // edge list
+    /**
+     *
+     * @param filename
+     * @return NodeList
+     */
+    private boolean readQuestions(String filename) {
+        ArrayList<Question> questionList = new ArrayList<>();
 
-				fileRead = input.readLine();
+        try {
+            BufferedReader input = new BufferedReader(new FileReader(filename));
 
-				while (!fileRead.equals("###")) {
-					description.append(fileRead).append("\n");
-					fileRead = input.readLine();
+            // read in the first line extracting the chapter Number
+            int chapterNo = Integer.parseInt(input.readLine().substring(8, 9));
+            input.readLine();// Skip 
+            input.readLine();// Skip 
 
-				}
-				Node newNode = new Node(tokens[0], edges, description.toString(),items);  // node name
-				
-                                fileRead = input.readLine();
-				newNodesList.add(newNode);
+            String line = input.readLine();// 4th line is the first real line of questions
+            while (line != null) {
+                StringBuilder description = new StringBuilder();
 
-			}
+                while (!line.equals("#")) {
+                    Question question = new Question();
+                    question.chapterNo = chapterNo;
+                    description.append(line).append("\n");
+                    line = input.readLine();
+//                    if (line.substring(0, 6).equals("Section")) {
+//                        line = input.readLine(); //disregard the Section line.
+//                    }
 
-		} catch (FileNotFoundException ex) {
-			Logger.getLogger(NodeList.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (IOException ex) {
-			Logger.getLogger(NodeList.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		return newNodesList;
-	}
+                    while (!line.equals("a. ")) {
 
-    
+                        description.append(line).append("\n");
+                        input.readLine();
+
+                        description.append(line).append("\n");
+                        line = input.readLine();
+                    }
+
+                    if (line.startsWith("a.")) {
+                        question.choiceA = line;
+                        question.choiceB = input.readLine();
+                        question.choiceC = input.readLine();
+                        question.choiceD = input.readLine();
+                    } else if (line.startsWith("b.")) {
+
+                    } else if (line.startsWith("c.")) {
+
+                    } else if (line.startsWith("d.")) {
+
+                    }
+
+                }
+
+                line = input.readLine();
+                
+
+            }
+
+        } catch (FileNotFoundException ex) {
+            System.out.println(ex.getMessage());
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return true;
+    }
+
 }
