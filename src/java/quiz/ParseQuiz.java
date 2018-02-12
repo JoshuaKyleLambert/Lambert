@@ -46,8 +46,8 @@ public class ParseQuiz {
     private boolean readQuestions(String filename) {
         Pattern pattern = Pattern.compile("\\d");
         ArrayList<Question> questionList = new ArrayList<>();
+        int questionCounter = 0;
 
-         
         try {
             BufferedReader input = new BufferedReader(new FileReader(filename));
 
@@ -57,45 +57,37 @@ public class ParseQuiz {
             input.readLine();// Skip 
 
             String line = input.readLine();// 4th line is the first real line of questions
-            
             while (line != null) {
-                
+                questionCounter++;
+                Question question = new Question();
+                question.chapterNo = chapterNo;
                 StringBuilder description = new StringBuilder();
 
                 while (!line.equals("#")) {
-                    Question question = new Question();
-                    question.chapterNo = chapterNo;
-                    description.append(line).append("\n");
-                    line = input.readLine();
-//                    if (line.substring(0, 6).equals("Section")) {
-//                        line = input.readLine(); //disregard the Section line.
-//                    }
 
-                    while (!line.equals("a. ")) {
-
-                        description.append(line).append("\n");
-                        input.readLine();
-
+                    if (line.substring(0, 1).matches("\\d")) {
+                        description.append(questionCounter).append(". ").append(line).append("\n");
+                        line = input.readLine();
+                    } else if (line.startsWith("a.")) {
+                        question.choiceA = line;
+                        line = input.readLine();
+                    } else if (line.startsWith("b.")) {
+                        question.choiceB = line;
+                        line = input.readLine();
+                    } else if (line.startsWith("c.")) {
+                        question.choiceC = line;
+                        line = input.readLine();
+                    } else if (line.startsWith("d.")) {
+                        question.choiceD = line;
+                        line = input.readLine();
+                    } else if (line.startsWith("Key")) {
+                        question.answerKey = line.substring(4);
+                    } else {
                         description.append(line).append("\n");
                         line = input.readLine();
                     }
 
-                    if (line.startsWith("a.")) {
-                        question.choiceA = line;
-                        question.choiceB = input.readLine();
-                        question.choiceC = input.readLine();
-                        question.choiceD = input.readLine();
-                    } else if (line.startsWith("b.")) {
-
-                    } else if (line.startsWith("c.")) {
-
-                    } else if (line.startsWith("d.")) {
-
-                    }
-
                 }
-
-                line = input.readLine();
 
             }
 
