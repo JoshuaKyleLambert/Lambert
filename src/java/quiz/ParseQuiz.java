@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -43,8 +44,10 @@ public class ParseQuiz {
      * @return NodeList
      */
     private boolean readQuestions(String filename) {
+        Pattern pattern = Pattern.compile("\\d");
         ArrayList<Question> questionList = new ArrayList<>();
 
+         
         try {
             BufferedReader input = new BufferedReader(new FileReader(filename));
 
@@ -54,7 +57,9 @@ public class ParseQuiz {
             input.readLine();// Skip 
 
             String line = input.readLine();// 4th line is the first real line of questions
+            
             while (line != null) {
+                
                 StringBuilder description = new StringBuilder();
 
                 while (!line.equals("#")) {
@@ -91,7 +96,6 @@ public class ParseQuiz {
                 }
 
                 line = input.readLine();
-                
 
             }
 
