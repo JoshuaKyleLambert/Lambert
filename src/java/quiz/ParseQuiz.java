@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -19,14 +20,27 @@ import java.util.regex.Pattern;
  * @author Joshu
  */
 public class ParseQuiz {
+    //ArrayList<Question> questionList;
 
-    public static void main() {
+    public static void main(String[] args) {
+        ParseQuiz quizlist = new ParseQuiz();
 
     }
 
-    class Question {
+    public ParseQuiz() {
+        printQuestionList();
+    }
 
-        int chapterNo;
+    public void printQuestionList() {
+        ArrayList read;
+        read = readQuestions("C:\\selftest\\selftest11e\\chapter1.txt");
+        read.forEach(e -> System.out.println(e.toString()));
+
+    }
+
+    static class Question {
+
+        int chapterNo = 1;
         int questionNo;
         String questionText;
         String choiceA;
@@ -36,6 +50,21 @@ public class ParseQuiz {
         String choiceE;
         String answerKey;
         String hint;
+
+        @Override
+        public String toString() {
+            return  chapterNo + "\n"
+                    + questionNo + "\n"
+                    + questionText + "\n"
+                    + choiceA + "\n"
+                    + choiceB + "\n"
+                    + choiceC + "\n"
+                    + choiceD + "\n"
+                    + choiceE + "\n"
+                    + answerKey + "\n"
+                    + hint + "\n";
+        }
+
     }
 
     /**
@@ -43,8 +72,10 @@ public class ParseQuiz {
      * @param filename
      * @return NodeList
      */
-    private boolean readQuestions(String filename) {
-        Pattern pattern = Pattern.compile("\\d");
+    private ArrayList<Question> readQuestions(String filename) {
+        String matchThis = "\\d{1,2}";
+        Pattern pattern = Pattern.compile("(\\d{1,2})");
+        Matcher matcher;
         ArrayList<Question> questionList = new ArrayList<>();
         int questionCounter = 0;
 
@@ -52,24 +83,27 @@ public class ParseQuiz {
             BufferedReader input = new BufferedReader(new FileReader(filename));
 
             // read in the first line extracting the chapter Number
-            int chapterNo = Integer.parseInt(input.readLine().substring(8, 9));
+            int chapterNo;// = Integer.parseInt(input.readLine().substring(8, 9));
             input.readLine();// Skip 
             input.readLine();// Skip 
 
-            String line = input.readLine();// 4th line is the first real line of questions
-            while (line != null) {
-                questionCounter++;
+            String line;// = input.readLine();// 4th line is the first real line of questions
+            while ((line = input.readLine()) != null) {
+                
                 Question question = new Question();
-                question.chapterNo = chapterNo;
+                question.questionNo = ++questionCounter;
+                //question.chapterNo = 1;
                 StringBuilder description = new StringBuilder();
 
                 while (!line.equals("#")) {
-
-                    if (line.substring(0, 1).matches("\\d")) {
-                        description.append(questionCounter).append(". ").append(line).append("\n");
+                    matcher = pattern.matcher(line);
+                    System.out.println(matcher.matches());
+                    if (matcher.matches()) {
+                        System.out.println(matcher.matches());
+                        description.append(line).append("\n");
                         line = input.readLine();
                     } else if (line.startsWith("a.")) {
-                        question.choiceA = line;
+                        question.choiceA = line.substring(3);
                         line = input.readLine();
                     } else if (line.startsWith("b.")) {
                         question.choiceB = line;
@@ -81,13 +115,19 @@ public class ParseQuiz {
                         question.choiceD = line;
                         line = input.readLine();
                     } else if (line.startsWith("Key")) {
-                        question.answerKey = line.substring(4);
+                        question.answerKey = line;
+                        line = input.readLine();
                     } else {
                         description.append(line).append("\n");
+                        //if (!input.readLine().isEmpty()){
                         line = input.readLine();
+                        // }
+
                     }
 
                 }
+
+                questionList.add(question);
 
             }
 
@@ -95,8 +135,11 @@ public class ParseQuiz {
             System.out.println(ex.getMessage());
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
+        } catch (NullPointerException ex) {
+            System.out.println(ex.getMessage());
+            return questionList;
         }
-        return true;
+        return questionList;
     }
 
 }
