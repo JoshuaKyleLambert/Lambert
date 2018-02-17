@@ -20,6 +20,7 @@ public class ParseQuiz {
 
     final int CHAPTERS = 44;
     private int chapter;
+   // String line;
 
     public static void main(String[] args) {
         ParseQuiz quizlist = new ParseQuiz();
@@ -31,13 +32,17 @@ public class ParseQuiz {
     }
 
     public void printQuestionList() {
-        ArrayList read;
+        ArrayList read = null;
+        int counter = 0;
         for (int i = 1; i <= CHAPTERS; i++) {
-            this.chapter = i;
+           this.chapter = i;
             read = readQuestions("C:\\selftest\\selftest11e\\chapter" + i + ".txt");
             //read.forEach(e -> System.out.println(e.toString()));
             //read.forEach(e -> import(e));
+            System.out.printf("%d\n", counter += read.size());
+            
         }
+
     }
 
     static class Question {
@@ -78,15 +83,16 @@ public class ParseQuiz {
         String matchThis = "\\d{1,2}";
         Pattern pattern = Pattern.compile("\\d{1,2}\\.\\s+(.*)");
         Pattern answers = Pattern.compile("^[Kk]ey:([a-e]{1,5})\\s*(.*)$");//^[kK]ey:([a-e]+)\s*(.*)$
-        Pattern choice = Pattern.compile("^[a-e]\\.\\s*(.*)$");
+        Pattern choice = Pattern.compile("^[a-eA-E]\\.\\s*(.*)$");
         Matcher matcher;
         Matcher choiceMatcher;
+        String line;
         ArrayList<Question> questionList = new ArrayList<>();
         int questionCounter = 0;
 
         try {
             BufferedReader input = new BufferedReader(new FileReader(filename));
-            String line;
+
             input.readLine();// Skip 
             input.readLine();// Skip 
             input.readLine();// 4th line is the first real line of questions
@@ -132,10 +138,14 @@ public class ParseQuiz {
                         if (matcher.matches()) {
                             question.answerKey = matcher.group(1);
                             question.hint = matcher.group(2);
+                            line = input.readLine();
                         }
-                        if ((line = input.readLine()) == null) { // final description and question here
+                        // End of the file gets hit here after the last key: hint
+                        // final description and question here
+                        if ((line = input.readLine()) == null) {
                             question.questionText = description.toString();
                             questionList.add(question);
+                            line = null;
                             return questionList;
                         }
                     } else {
@@ -153,6 +163,8 @@ public class ParseQuiz {
             System.out.println(ex.getMessage());
             // return questionList;
         }
+
+        //This return shouldnt actually ever get touched.
         return questionList;
     }
 }
