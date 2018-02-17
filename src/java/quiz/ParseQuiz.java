@@ -74,7 +74,8 @@ public class ParseQuiz {
      */
     private ArrayList<Question> readQuestions(String filename) {
         String matchThis = "\\d{1,2}";
-        Pattern pattern = Pattern.compile("(\\d{1,2})");
+        Pattern pattern = Pattern.compile("(\\d{1,2}\\..*)");
+        Pattern answers = Pattern.compile("^([a-e]{1,5})");
         Matcher matcher;
         ArrayList<Question> questionList = new ArrayList<>();
         int questionCounter = 0;
@@ -87,7 +88,7 @@ public class ParseQuiz {
             input.readLine();// Skip 
             input.readLine();// Skip 
 
-            String line;// = input.readLine();// 4th line is the first real line of questions
+            String line = input.readLine();// 4th line is the first real line of questions
             while ((line = input.readLine()) != null) {
                 
                 Question question = new Question();
@@ -97,25 +98,34 @@ public class ParseQuiz {
 
                 while (!line.equals("#")) {
                     matcher = pattern.matcher(line);
-                    System.out.println(matcher.matches());
+                    //System.out.println(matcher.matches());
                     if (matcher.matches()) {
-                        System.out.println(matcher.matches());
+                        if (line.startsWith("Section"))input.readLine();
+                        //System.out.println(matcher.matches());
                         description.append(line).append("\n");
                         line = input.readLine();
+                    
+                        
                     } else if (line.startsWith("a.")) {
                         question.choiceA = line.substring(3);
                         line = input.readLine();
                     } else if (line.startsWith("b.")) {
-                        question.choiceB = line;
+                        question.choiceB = line.substring(3);
                         line = input.readLine();
                     } else if (line.startsWith("c.")) {
-                        question.choiceC = line;
+                        question.choiceC = line.substring(3);
                         line = input.readLine();
                     } else if (line.startsWith("d.")) {
-                        question.choiceD = line;
+                        question.choiceD = line.substring(3);
+                        line = input.readLine();
+                    } else if (line.startsWith("e.")){
+                        question.choiceE = line.substring(3);
                         line = input.readLine();
                     } else if (line.startsWith("Key")) {
-                        question.answerKey = line;
+                        matcher = answers.matcher("a 8");
+                        int end = matcher.end();
+                        System.out.println("end of answers here" + end);
+                        question.answerKey = line.substring(4);
                         line = input.readLine();
                     } else {
                         description.append(line).append("\n");
@@ -126,7 +136,7 @@ public class ParseQuiz {
                     }
 
                 }
-
+                question.questionText = description.toString();
                 questionList.add(question);
 
             }
