@@ -17,9 +17,10 @@ import java.util.regex.Pattern;
  * @author Joshua
  */
 public class ParseQuiz {
+
     final int CHAPTERS = 44;
     private int chapter;
-    
+
     public static void main(String[] args) {
         ParseQuiz quizlist = new ParseQuiz();
 
@@ -77,7 +78,7 @@ public class ParseQuiz {
         String matchThis = "\\d{1,2}";
         Pattern pattern = Pattern.compile("\\d{1,2}\\.\\s+(.*)");
         Pattern answers = Pattern.compile("^[Kk]ey:([a-e]{1,5})\\s*(.*)$");//^[kK]ey:([a-e]+)\s*(.*)$
-        Pattern choice = Pattern.compile("^[a-e]\\.\\s+(.*)$");
+        Pattern choice = Pattern.compile("^[a-e]\\.\\s*(.*)$");
         Matcher matcher;
         Matcher choiceMatcher;
         ArrayList<Question> questionList = new ArrayList<>();
@@ -89,7 +90,7 @@ public class ParseQuiz {
             input.readLine();// Skip 
             input.readLine();// Skip 
             input.readLine();// 4th line is the first real line of questions
-            
+
             while ((line = input.readLine()) != null) {
 
                 Question question = new Question();
@@ -132,7 +133,11 @@ public class ParseQuiz {
                             question.answerKey = matcher.group(1);
                             question.hint = matcher.group(2);
                         }
-                        line = input.readLine();
+                        if ((line = input.readLine()) == null) { // final description and question here
+                            question.questionText = description.toString();
+                            questionList.add(question);
+                            return questionList;
+                        }
                     } else {
                         description.append(line).append("\n");
                         line = input.readLine();
@@ -146,7 +151,7 @@ public class ParseQuiz {
             System.out.println(ex.getMessage());
         } catch (NullPointerException ex) {
             System.out.println(ex.getMessage());
-            return questionList;
+            // return questionList;
         }
         return questionList;
     }
