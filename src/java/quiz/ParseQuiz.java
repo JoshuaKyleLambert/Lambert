@@ -6,22 +6,20 @@
 package quiz;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
  *
- * @author Joshu
+ * @author Joshua
  */
 public class ParseQuiz {
-    //ArrayList<Question> questionList;
-
+    final int CHAPTERS = 44;
+    private int chapter;
+    
     public static void main(String[] args) {
         ParseQuiz quizlist = new ParseQuiz();
 
@@ -33,14 +31,17 @@ public class ParseQuiz {
 
     public void printQuestionList() {
         ArrayList read;
-        read = readQuestions("C:\\selftest\\selftest11e\\chapter1.txt");
-        read.forEach(e -> System.out.println(e.toString()));
-
+        for (int i = 1; i <= CHAPTERS; i++) {
+            this.chapter = i;
+            read = readQuestions("C:\\selftest\\selftest11e\\chapter" + i + ".txt");
+            //read.forEach(e -> System.out.println(e.toString()));
+            //read.forEach(e -> import(e));
+        }
     }
 
     static class Question {
 
-        int chapterNo = 1;
+        int chapterNo;
         int questionNo;
         String questionText;
         String choiceA;
@@ -53,7 +54,7 @@ public class ParseQuiz {
 
         @Override
         public String toString() {
-            return  chapterNo + "\n"
+            return chapterNo + "\n"
                     + questionNo + "\n"
                     + questionText + "\n"
                     + choiceA + "\n"
@@ -74,76 +75,74 @@ public class ParseQuiz {
      */
     private ArrayList<Question> readQuestions(String filename) {
         String matchThis = "\\d{1,2}";
-        Pattern pattern = Pattern.compile("(\\d{1,2}\\..*)");
-        Pattern answers = Pattern.compile("^([a-e]{1,5})");
+        Pattern pattern = Pattern.compile("\\d{1,2}\\.\\s+(.*)");
+        Pattern answers = Pattern.compile("^[Kk]ey:([a-e]{1,5})\\s*(.*)$");//^[kK]ey:([a-e]+)\s*(.*)$
+        Pattern choice = Pattern.compile("^[a-e]\\.\\s+(.*)$");
         Matcher matcher;
+        Matcher choiceMatcher;
         ArrayList<Question> questionList = new ArrayList<>();
         int questionCounter = 0;
 
         try {
             BufferedReader input = new BufferedReader(new FileReader(filename));
-
-            // read in the first line extracting the chapter Number
-            int chapterNo;// = Integer.parseInt(input.readLine().substring(8, 9));
+            String line;
             input.readLine();// Skip 
             input.readLine();// Skip 
-
-            String line = input.readLine();// 4th line is the first real line of questions
+            input.readLine();// 4th line is the first real line of questions
+            
             while ((line = input.readLine()) != null) {
-                
+
                 Question question = new Question();
                 question.questionNo = ++questionCounter;
-                //question.chapterNo = 1;
+                question.chapterNo = chapter;
                 StringBuilder description = new StringBuilder();
-
+                if (line.startsWith("Section")) {
+                    line = input.readLine(); //Discard section Lines for now.
+                }
                 while (!line.equals("#")) {
                     matcher = pattern.matcher(line);
-                    //System.out.println(matcher.matches());
+                    choiceMatcher = choice.matcher(line);
+
                     if (matcher.matches()) {
-                        if (line.startsWith("Section"))input.readLine();
-                        //System.out.println(matcher.matches());
-                        description.append(line).append("\n");
+                        description.append(matcher.group(1));
                         line = input.readLine();
-                    
-                        
-                    } else if (line.startsWith("a.")) {
-                        question.choiceA = line.substring(3);
+                    } else if (line.startsWith("a.") || line.startsWith("A.")) {
+                        choiceMatcher.matches();
+                        question.choiceA = choiceMatcher.group(1);
                         line = input.readLine();
-                    } else if (line.startsWith("b.")) {
-                        question.choiceB = line.substring(3);
+                    } else if (line.startsWith("b.") || line.startsWith("B.")) {
+                        choiceMatcher.matches();
+                        question.choiceB = choiceMatcher.group(1);
                         line = input.readLine();
-                    } else if (line.startsWith("c.")) {
-                        question.choiceC = line.substring(3);
+                    } else if (line.startsWith("c.") || line.startsWith("C.")) {
+                        choiceMatcher.matches();
+                        question.choiceC = choiceMatcher.group(1);
                         line = input.readLine();
-                    } else if (line.startsWith("d.")) {
-                        question.choiceD = line.substring(3);
+                    } else if (line.startsWith("d.") || line.startsWith("D.")) {
+                        choiceMatcher.matches();
+                        question.choiceD = choiceMatcher.group(1);
                         line = input.readLine();
-                    } else if (line.startsWith("e.")){
-                        question.choiceE = line.substring(3);
+                    } else if (line.startsWith("e.") || line.startsWith("E.")) {
+                        choiceMatcher.matches();
+                        question.choiceE = choiceMatcher.group(1);
                         line = input.readLine();
-                    } else if (line.startsWith("Key")) {
-                        matcher = answers.matcher("a 8");
-                        int end = matcher.end();
-                        System.out.println("end of answers here" + end);
-                        question.answerKey = line.substring(4);
+                    } else if (line.startsWith("Key") || line.startsWith("key")) {
+                        matcher = answers.matcher(line);
+                        if (matcher.matches()) {
+                            question.answerKey = matcher.group(1);
+                            question.hint = matcher.group(2);
+                        }
                         line = input.readLine();
                     } else {
                         description.append(line).append("\n");
-                        //if (!input.readLine().isEmpty()){
                         line = input.readLine();
-                        // }
-
                     }
-
                 }
                 question.questionText = description.toString();
                 questionList.add(question);
-
             }
-
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex.getMessage());
-        } catch (IOException ex) {
+            input.close();
+        } catch (IllegalStateException | IOException ex) {
             System.out.println(ex.getMessage());
         } catch (NullPointerException ex) {
             System.out.println(ex.getMessage());
@@ -151,5 +150,4 @@ public class ParseQuiz {
         }
         return questionList;
     }
-
 }
