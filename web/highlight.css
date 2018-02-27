@@ -12,15 +12,15 @@ and open the template in the editor.
 .hljs,
 .hljs-subst{color:#444}
 .hljs-comment{color: gray}
-.hljs-keyword{color: #000080; font-weight: normal}
+.hljs-keyword{color: green; font-weight: normal}
 .hljs-attribute,
 .hljs-selector-tag,
 .hljs-meta-keyword,
 .hljs-doctag,
 .hljs-name{font-weight:bold}
 .hljs-type,
-.hljs-string,
-.hljs-number,
+.hljs-string{color: blue}
+.hljs-number{color: teal}
 .hljs-selector-id,
 .hljs-selector-class,
 .hljs-quote,
@@ -35,7 +35,7 @@ and open the template in the editor.
 .hljs-link,
 .hljs-selector-attr,
 .hljs-selector-pseudo{color:#BC6060}
-.hljs-literal{font-weight: normal; color: #3366FF}
+.hljs-literal{font-weight: normal; color: darkblue}
 .hljs-built_in,
 .hljs-bullet,
 .hljs-code,
