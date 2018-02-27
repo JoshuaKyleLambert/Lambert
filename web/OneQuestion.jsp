@@ -59,20 +59,21 @@
         <div style="width: 500px auto; max-width: 620px; margin: 0 auto; border: 1px solid #f6912f; font-weight: normal ">
 
             <form method="post" >
-                
-                <% String[] questionText = question.getQuestion().split("\\n", 2);
+
+                <% String[] questionText = question.getQuestion().split("\n", 2);
                     //String questionBody = questionText[1];
                     String questionBody = "";
-                    if (questionText.length > 1)
+                    if (questionText.length > 1) {
                         questionBody = questionText[1];
+                    }
                 %>
                 <%= questionText[0]%>
 
-                <pre><code style="background-color: white;"><%= questionBody  %></code></pre>
+                <pre><code style="background-color: white;"><%= questionBody%></code></pre>
 
                 <% String[] answerList = question.getAnswerList();%>
                 <% int answerlistlength = answerList.length;%>
-                <div id="questionstatement"><br>
+                <div id="questionstatement" style="margin-left: 5px;"><br>
                     
                     <% if (question.getAnswerKey().length() > 1) {%>
                     <% for (int i = 0; i < answerList.length; i++) {%>
@@ -92,8 +93,20 @@
 
 
                 </div>
-
                 
+                <%String[] answers = request.getParameterValues("answer");
+                    if (answers != null) {
+                        StringBuilder submit = new StringBuilder();
+                        for (String e: answers) {
+                            submit.append(e);
+                        }
+                        if (submit.toString().equalsIgnoreCase(question.getAnswerKey())) {
+                            out.print("<span style=\"margin-left: 5px;color: green;\">Your answer is correct. </span><img border=\"0\" src=correct.jpg width=\"42\" height=\"30\">");
+                        } else {
+                            out.print("<span style = \"color: red\">Your answer E is incorrect <img border=\"0\" src=wrong.jpg width=\"28\" height=\"28\"></span>");
+                        }
+                    }
+                %><br>
 
                 <input type="submit" style = "margin-bottom: 0px;
                        margin-top: 10px;
@@ -105,12 +118,9 @@
                        border-radius: 0px; color:
                        black;" name = "buttonName" value= "Check My Answer"> </div>
                        
-                       <%-- request.getParameterValues("answer")  returns an array--%>
                        
-                <input type="hidden" value=5.2.1 name="title" />
-                <input type="hidden" value=5 name="chapter" />
-                <input type="hidden" value="intro10equiz" name="table2" />
-                <input type="hidden" value="" name="username" />
+
+
                 
                 <input type="hidden" value="<%= request.getParameter("chapterNo")%>" name="chapterNo" />
                 <input type="hidden" value="<%= request.getParameter("questionNo")%>" name="questionNo" />
