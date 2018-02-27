@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : Joshu
 */
 
-.hljs{display:block;overflow-x:auto;padding:0.5em;background:#F0F0F0}
+.hljs{display:block;overflow-x:auto;padding:0.5em;background:white}
 .hljs,
 .hljs-subst{color:#444}
 .hljs-comment{color: gray}
@@ -44,3 +44,13 @@ and open the template in the editor.
 .hljs-meta-string{color:#4d99bf}
 .hljs-emphasis{font-style:italic}
 .hljs-strong{font-weight:bold}
+#h3style {color: white; font-family: Helvetica, sans-serif;  font-size: 100%; border-color: #6193cb; text-align: center;margin-bottom: 0.5em; background-color: #6193cb;}  
+#checkButton {margin-bottom: 0px;
+              margin-top: 10px;
+              margin-left: 10px;
+              border: 0px;
+              font-family: Helvetica, monospace;
+              font-size: 85%;
+              background-color: rgba(0, 128, 0, 0.7);
+              border-radius: 0px; color:
+                  black;}
