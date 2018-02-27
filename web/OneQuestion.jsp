@@ -24,10 +24,6 @@
     <head>
         <title>Individual Questions Project</title>
 
-        <style>
-            #h3style {color: white; font-family: Helvetica, sans-serif;  font-size: 100%; border-color: #6193cb; text-align: center;margin-bottom: 0.5em; background-color: #6193cb;}  
-        </style>
-
         <%  String[] questionText = question.getQuestion().split("\n", 2);
             String theQuestion = questionText[0];
             String questionBody = "";
@@ -40,10 +36,10 @@
     <body>
         <h3 id="h3style" style = " width: 500px auto; max-width: 620px; margin: 0 auto; ">Multiple-Choice Question 5.2.1</h3>
         <div style="width: 500px auto; max-width: 620px; margin: 0 auto; border: 1px solid #f6912f; font-weight: normal;padding-top: 10px; ">
-           
+
             <span style="margin-top: 10px;margin-left: 10px"><%= theQuestion%></span>
-            
-            <pre><code style="background-color: white;margin-left: 10px;"><%= questionBody%></code></pre>
+
+            <pre><code ><%= questionBody%></code></pre>
                 
         <form method="post" >
                 <% String[] answerList = question.getAnswerList();%>
@@ -83,17 +79,7 @@
                     }
                 %><br>
 
-                <input type="submit" style = "margin-bottom: 0px;
-                       margin-top: 10px;
-                       margin-left: 10px;
-                       border: 0px;
-                       font-family: Helvetica, monospace;
-                       font-size: 85%;
-                       background-color: rgba(0, 128, 0, 0.7);
-                       border-radius: 0px; color:
-                       black;" name = "buttonName" value= "Check My Answer"> 
-                       
-               
+                <input type="submit" id="checkButton" name = "buttonName" value= "Check My Answer">                 
                 <input type="hidden" value="<%= chap%>" name="chapterNo" />
                 <input type="hidden" value="<%= ques%>" name="questionNo" />
                 <input type="hidden" value=500 name="width" />
