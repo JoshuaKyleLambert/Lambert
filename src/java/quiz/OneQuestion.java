@@ -85,9 +85,9 @@ public class OneQuestion implements java.io.Serializable {
             String selectString = "SELECT  question, choiceA, choiceB, choiceC, choiceD, choiceE, answerKey, hint "
                     + "  FROM intro11equiz WHERE chapterNo = ? AND questionNo = ?";
 
-            String insertString = "INSERT INTO Staff (id, lastName, firstName, mi,"
-                    + " address, city, state, telephone, email)"
-                    + " VALUES (?,?,?,?,?,?,?,?,?)";
+            String insertString = "INSERT INTO intro11e (chapterNo, questionNo, isCorrect, time,"
+                    + " hostname, answerA, answerB, answerC, answerD, answerE, username)"
+                    + " VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
             String updateString = "UPDATE Staff SET "
                     + "id=?, lastName=?, mi=?, firstName=?, address=?, city=?, state=?,"
