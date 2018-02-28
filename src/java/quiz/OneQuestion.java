@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 /**
  *
- * @author Joshu
+ * @author Joshua Lambert
  */
 public class OneQuestion implements java.io.Serializable {
 
@@ -114,7 +114,7 @@ public class OneQuestion implements java.io.Serializable {
             System.out.println("Driver loaded");
 
             //Establish a connection
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/javabook", "scott", "tiger");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/javabook", "lambert", "tiger");
             System.out.println("Database connected");
 
             String selectString = "SELECT  question, choiceA, choiceB, choiceC, choiceD, choiceE, answerKey, hint "
@@ -160,7 +160,7 @@ public class OneQuestion implements java.io.Serializable {
 
     public void setIsCorrect(String isCorrect) {
         System.out.println(isCorrect);
-        
+
         //this.isCorrect = isCorrect;
     }
 
@@ -169,9 +169,7 @@ public class OneQuestion implements java.io.Serializable {
     }
 
     public void setSubmittedAnswers(String[] submittedAnswers) {
-
-        this.submittedAnswers = submittedAnswers;
-
+            this.submittedAnswers = submittedAnswers;
     }
 
     public String getButtonName() {
@@ -208,7 +206,7 @@ public class OneQuestion implements java.io.Serializable {
             }
         }
         isCorrect = check.toString().equals(getAnswerKey());
-               
+
         insertRecord();
     }
 
