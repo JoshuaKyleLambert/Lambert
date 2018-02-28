@@ -15,7 +15,6 @@
     <jsp:setProperty name="question" property="questionNo" value="<%= ques%>" />
     <jsp:setProperty name="question" property="submittedAnswers" value="<%= request.getParameterValues("answer")%>" />
     <jsp:setProperty name="question" property="hostName" value="<%= request.getRemoteAddr()%>" />
-    
 
     <% question.viewQuestion();%>
 
@@ -70,7 +69,7 @@
                 </div>
                 
                 <%String[] answers = request.getParameterValues("answer");
-                   
+
                     if (answers != null) {
                         StringBuilder submit = new StringBuilder();
                         for (String e : answers) {
@@ -78,18 +77,15 @@
                         }
 
                         if (submit.toString().equalsIgnoreCase(question.getAnswerKey())) {
-                            out.print("<span style=\"margin-left: 10px;color: green;\">Your answer is correct. </span><img border=\"0\" src=correct.jpg width=\"42\" height=\"30\">");
-                         
-
-                        } else if (question.getSubmittedAnswers() == null) {
-                            out.print("<span style =\"color: red;margin-left: 10px;\">Your answer is empty <img border=\"0\" src=wrong.jpg width=\"28\" height=\"28\"></span>");
-
+                            out.print("<span style=\"margin-left: 10px;color: green;\">Your answer " + submit.toString().toUpperCase() + " is correct. </span><img border=\"0\" src=correct.jpg width=\"42\" height=\"30\">");
                         } else if (!submit.toString().equalsIgnoreCase(question.getAnswerKey())) {
-                            out.print("<span style =\"color: red;margin-left: 10px;\">Your answer E is incorrect <img border=\"0\" src=wrong.jpg width=\"28\" height=\"28\"></span>");
+                            out.print("<span style =\"color: red;margin-left: 10px;\">Your answer " + submit.toString().toUpperCase() + " is incorrect <img border=\"0\" src=wrong.jpg width=\"28\" height=\"28\"></span>");
                             out.print("<div id = \"a1\" style = \"color: green;margin-left: 10px;\"> Click here to show the correct answer and an explanation</div>");
-                            out.print("<script type=\"text/javascript\">$(document).ready(function() {$(\"#a1\").click(function() {$(this).text(\"The correct answer is " + question.getAnswerKey() + " \");$(this).append(\"<div style = 'color: purple; font-family: Times New Roman;'> Explanation: " + question.getHint() + " </div>\");});});</script>");
+                            out.print("<script type=\"text/javascript\">$(document).ready(function() {$(\"#a1\").click(function() {$(this).text(\"The correct answer is " + question.getAnswerKey().toUpperCase() + " \");$(this).append(\"<div style = 'color: purple; font-family: Times New Roman;'> Explanation: " + question.getHint() + " </div>\");});});</script>");
 
                         }
+                    } else if (question.getButtonName() != null) {
+                        out.print("<div>You did not answer this <img border=\"0\" src=noanswer.jpg width=\"40\" height=\"40\"></div>");
                     }
 
                 %><br>
