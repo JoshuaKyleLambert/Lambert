@@ -8,7 +8,7 @@ and open the template in the editor.
     Author     : Joshu
 */
 
-.hljs{display:block;overflow-x:auto;padding:0.5em;background:white}
+.hljs{display:block;overflow-x:auto;padding:0.5em;background:white; }
 .hljs,
 .hljs-subst{color:#444}
 .hljs-comment{color: gray}
