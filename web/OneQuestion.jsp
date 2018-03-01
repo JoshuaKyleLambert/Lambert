@@ -74,12 +74,9 @@
                         out.print("<div>You did not answer this <img border=\"0\" src=noanswer.jpg width=\"40\" height=\"40\"></div>");
                     }
                 %><br>
-
                 <input type="submit" id="checkButton" name = "buttonName" value= "Check My Answer">                 
                 <input type="hidden" value="<%= chap%>" name="chapterNo" />
                 <input type="hidden" value="<%= ques%>" name="questionNo" />
-                <input type="hidden" value=500 name="width" />
-                <input type="hidden" value=620 name="maxwidth" />
         </form>      
         </div>
     </body>
