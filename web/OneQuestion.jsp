@@ -3,7 +3,7 @@
 <%String chap, ques;
     if ((chap = request.getParameter("chapterNo")) != null) {
     } else {
-        chap = "5";
+        chap = Integer.toString((int) (Math.random() * 43) + 1);
     }
     if ((ques = request.getParameter("questionNo")) != null) {
     } else {
@@ -15,11 +15,10 @@
     <jsp:setProperty name="question" property="questionNo" value="<%= ques%>" />
     <jsp:setProperty name="question" property="submittedAnswers" value="<%= request.getParameterValues("answer")%>" />
     <jsp:setProperty name="question" property="hostName" value="<%= request.getRemoteAddr()%>" />
-
     <% question.viewQuestion();%>
-
 </jsp:useBean>
 <jsp:setProperty name="question" property="*"/>
+
 <link rel="stylesheet"  type="text/css"    href="highlight.css">
 <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
@@ -27,7 +26,6 @@
 <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
 <!DOCTYPE html>
 <html>
-
     <head>
         <title>Individual Questions Project</title>
 
@@ -44,31 +42,25 @@
         <h3 id="h3style" style = " width: 500px auto; max-width: 620px; margin: 0 auto; ">Multiple-Choice Question 5.2.1</h3>
         <div style="width: 500px auto; max-width: 620px; margin: 0 auto; border: 1px solid #f6912f; font-weight: normal;padding-top: 10px; padding-left: 5px">
             <span style="margin-top: 10px;margin-left: 10px"><%= theQuestion%></span>
-            <pre><code ><%= questionBody%></code></pre>
-                
+            <pre><code ><%= questionBody%></code></pre>             
         <form method="post" >
-                <% String[] answerList = question.getAnswerList();%>
-                
-                <div id="questionstatement" style="margin-left: 5px;"><br>
-                    
-                    <% if (question.getAnswerKey().length() > 1) {%>
-                    <% for (int i = 0; i < answerList.length; i++) {%>
-                    <% if (answerList[i] != null) {%>                 
+                <% String[] answerList = question.getAnswerList();
+                    if (question.getAnswerKey().length() > 1) {
+                        for (int i = 0; i < answerList.length; i++) {
+                            if (answerList[i] != null) {%>                 
                     <input name="answer" type="checkbox" value="<%= (char) ((int) 'a' + i)%>"  /> <%= (char) ((int) 'A' + i)%>. <%=  answerList[i]%>  <br /> 
-                    <%}%>
-                    <%}%>
-                    <%}%>
-
-                    <% if (question.getAnswerKey().length() == 1)
-                            for (int i = 0; i < answerList.length; i++) {
-                                if (answerList[i] != null) {%>                 
+                            <%}
+                        }
+                    }
+                    if (question.getAnswerKey().length() == 1) {
+                        for (int i = 0; i < answerList.length; i++) {
+                            if (answerList[i] != null) {%>                 
                     <input name="answer" type="radio" value="<%= (char) ((int) 'a' + i)%>"  /> <%= (char) ((int) 'A' + i)%>. <%=  answerList[i]%>  <br /> 
-                    <% }%>
-                    <% }%>
-
-                </div>
+                            <%}
+                        }
+                    }
                 
-                <%String[] answers = request.getParameterValues("answer");
+                String[] answers = request.getParameterValues("answer");
 
                     if (answers != null) {
                         StringBuilder submit = new StringBuilder();
@@ -88,7 +80,7 @@
                         out.print("<div>You did not answer this <img border=\"0\" src=noanswer.jpg width=\"40\" height=\"40\"></div>");
                     }
 
-                %><br>
+                            %><br>
 
                 <input type="submit" id="checkButton" name = "buttonName" value= "Check My Answer">                 
                 <input type="hidden" value="<%= chap%>" name="chapterNo" />
