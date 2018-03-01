@@ -36,7 +36,6 @@
                 questionBody = questionText[1];
             }
         %>
-
     </head>
     <body>
         <h3 id="h3style" style = " width: 500px auto; max-width: 620px; margin: 0 auto; ">Multiple-Choice Question 5.2.1</h3>
@@ -48,14 +47,14 @@
                     if (question.getAnswerKey().length() > 1) {
                         for (int i = 0; i < answerList.length; i++) {
                             if (answerList[i] != null) {%>                 
-                    <input name="answer" type="checkbox" value="<%= (char) ((int) 'a' + i)%>"  /> <%= (char) ((int) 'A' + i)%>. <%=  answerList[i]%>  <br /> 
+                                <input name="answer" type="checkbox" value="<%= (char) ((int) 'a' + i)%>"  /> <%= (char) ((int) 'A' + i)%>. <%=  answerList[i]%>  <br /> 
                             <%}
                         }
                     }
                     if (question.getAnswerKey().length() == 1) {
                         for (int i = 0; i < answerList.length; i++) {
                             if (answerList[i] != null) {%>                 
-                    <input name="answer" type="radio" value="<%= (char) ((int) 'a' + i)%>"  /> <%= (char) ((int) 'A' + i)%>. <%=  answerList[i]%>  <br /> 
+                                <input name="answer" type="radio" value="<%= (char) ((int) 'a' + i)%>"  /> <%= (char) ((int) 'A' + i)%>. <%=  answerList[i]%>  <br /> 
                             <%}
                         }
                     }
@@ -72,25 +71,21 @@
                             out.print("<span style=\"margin-left: 10px;color: green;\">Your answer " + submit.toString().toUpperCase() + " is correct. </span><img border=\"0\" src=correct.jpg width=\"42\" height=\"30\">");
                         } else if (!submit.toString().equalsIgnoreCase(question.getAnswerKey())) {
                             out.print("<span style =\"color: red;margin-left: 10px;\">Your answer " + submit.toString().toUpperCase() + " is incorrect <img border=\"0\" src=wrong.jpg width=\"28\" height=\"28\"></span>");
-                            out.print("<div id = \"a1\" style = \"color: green;margin-left: 10px;\"> Click here to show the correct answer and an explanation</div>");
+                            out.print("<div id = \"a1\" style = \"color: green;margin-left: 10px;cursor: zoom-in;\"> Click here to show the correct answer and an explanation</div>");
                             out.print("<script type=\"text/javascript\">$(document).ready(function() {$(\"#a1\").click(function() {$(this).text(\"The correct answer is " + question.getAnswerKey().toUpperCase() + " \");$(this).append(\"<div style = 'color: purple; font-family: Times New Roman;'> Explanation: " + question.getHint() + " </div>\");});});</script>");
-
                         }
                     } else if (question.getButtonName() != null) {
                         out.print("<div>You did not answer this <img border=\"0\" src=noanswer.jpg width=\"40\" height=\"40\"></div>");
                     }
 
-                            %><br>
+                %><br>
 
                 <input type="submit" id="checkButton" name = "buttonName" value= "Check My Answer">                 
                 <input type="hidden" value="<%= chap%>" name="chapterNo" />
                 <input type="hidden" value="<%= ques%>" name="questionNo" />
                 <input type="hidden" value=500 name="width" />
                 <input type="hidden" value=620 name="maxwidth" />
-
-
         </form>      
         </div>
-
     </body>
 </html>
