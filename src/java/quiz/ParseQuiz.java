@@ -45,7 +45,7 @@ public class ParseQuiz {
             System.out.println("Driver loaded");
 
             //Establish a connection
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/javabook", "scott", "tiger");
+            Connection connection = DriverManager.getConnection("jdbc:mysql://35.185.94.191/lambert", "lambert", "tiger");
             System.out.println("Database connected");
 
             //String selectString = "SELECT  lastName, mi, firstName, address, city, "
