@@ -41,7 +41,7 @@
         <h3 id="h3style" style = " width: 500px auto; max-width: 620px; margin: 0 auto; ">Multiple-Choice Question 5.2.1</h3>
         <div style="width: 500px auto; max-width: 620px; margin: 0 auto; border: 1px solid #f6912f; font-weight: normal;padding-top: 10px; padding-left: 5px">
             <span style="margin-top: 10px;margin-left: 10px"><%= theQuestion%></span>
-            <pre><code ><%= questionBody%></code></pre>             
+            <pre style="font-weight: bold;font-size: 100%"><code ><%= questionBody%></code></pre>             
         <form method="post" >
                 <% String[] answerList = question.getAnswerList();
                     if (question.getAnswerKey().length() > 1) {
