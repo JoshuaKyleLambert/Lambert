@@ -28,7 +28,6 @@
 <html>
     <head>
         <title>Individual Questions Project</title>
-
         <%  String[] questionText = question.getQuestion().trim().split("\n", 2);
             String theQuestion = questionText[0];
             String questionBody = "";
@@ -58,15 +57,12 @@
                             <%}
                         }
                     }
-                
                 String[] answers = request.getParameterValues("answer");
-
                     if (answers != null) {
                         StringBuilder submit = new StringBuilder();
                         for (String e : answers) {
                             submit.append(e);
                         }
-
                         if (submit.toString().equalsIgnoreCase(question.getAnswerKey())) {
                             out.print("<span style=\"margin-left: 10px;color: green;\">Your answer " + submit.toString().toUpperCase() + " is correct. </span><img border=\"0\" src=correct.jpg width=\"42\" height=\"30\">");
                         } else if (!submit.toString().equalsIgnoreCase(question.getAnswerKey())) {
@@ -77,7 +73,6 @@
                     } else if (question.getButtonName() != null) {
                         out.print("<div>You did not answer this <img border=\"0\" src=noanswer.jpg width=\"40\" height=\"40\"></div>");
                     }
-
                 %><br>
 
                 <input type="submit" id="checkButton" name = "buttonName" value= "Check My Answer">                 
